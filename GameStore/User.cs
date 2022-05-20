@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace GameStore
 {
@@ -12,9 +13,13 @@ namespace GameStore
         }
 
         public int Id { get; set; }
+        [Display(Name ="Нікнейм")]
         public string Username { get; set; } = null!;
+        [Display(Name ="Емейл")]
         public string? Email { get; set; }
+        [Display(Name = "Дата народження")]
         public DateTime? BirthDate { get; set; }
+        [Display(Name = "Баланс")]
         public decimal? Balance { get; set; }
 
         public virtual ICollection<GameCopy> GameCopies { get; set; }

@@ -1,0 +1,48 @@
+@model GameStore.User
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Створення користувача</h1>
+
+<h4>Введіть дані</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Username" class="control-label"></label>
+                <input asp-for="Username" class="form-control" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BirthDate" class="control-label"></label>
+                <input asp-for="BirthDate" class="form-control" asp-format="{0:MM/dd/yyyy}" />
+                <span asp-validation-for="BirthDate" class="text-danger"></span>
+            </div>
+            <input type="hidden" value="0" name = "Balance"/>
+            
+            <div class="form-group" style="margin: 5px">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class>
+    <form asp-action="Index">
+        <input type="submit" value="Назад до списку користувачів" class="btn btn-primary" />
+    </form>
+    @*<a asp-action="Index">Back to List</a>*@
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

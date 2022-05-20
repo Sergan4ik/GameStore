@@ -11,6 +11,7 @@ namespace GameStore
         }
 
         public int Id { get; set; }
+        public string Name { get; set; } = null!;
         public int? Game { get; set; }
         public decimal? Price { get; set; }
         public string? Rarity { get; set; }

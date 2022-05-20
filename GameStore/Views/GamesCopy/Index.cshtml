@@ -1,0 +1,53 @@
+@model IEnumerable<GameStore.GameCopy>
+
+@{
+    ViewData["Title"] = "Куплені ігри користувачем";
+}
+
+<h1>Ігри куплені користувачем @ViewBag.Username</h1>
+
+<p>
+    @Html.ActionLink("Купити нову гру" , "Create" , new {UserId = @ViewBag.Id})
+</p>
+
+<div id = "download_file">
+        <h3>Завантажити інформацію про профіль</h3>
+        <a asp-action="Export" asp-controller="GamesCopy" asp-route-userId="@ViewBag.Id"> Завантажити </a>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Game)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BuyDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Game.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Username)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BuyDate)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.CopyId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.CopyId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.CopyId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

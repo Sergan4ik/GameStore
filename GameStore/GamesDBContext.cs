@@ -16,7 +16,7 @@ namespace GameStore
         {
         }
 
-        public virtual DbSet<Game> Games { get; set; } = null!;
+        public virtual DbSet<Game?> Games { get; set; } = null!;
         public virtual DbSet<GameCopy> GameCopies { get; set; } = null!;
         public virtual DbSet<GameStudio> GameStudios { get; set; } = null!;
         public virtual DbSet<Item> Items { get; set; } = null!;
@@ -104,6 +104,10 @@ namespace GameStore
 
             modelBuilder.Entity<Item>(entity =>
             {
+                entity.Property(e => e.Name)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Price).HasColumnType("money");
 
                 entity.Property(e => e.Rarity)

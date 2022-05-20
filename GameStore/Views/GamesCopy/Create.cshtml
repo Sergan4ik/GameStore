@@ -1,0 +1,36 @@
+@model GameStore.GameCopy
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Покупка гри для @ViewBag.Username</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="GameId" class="control-label"></label>
+                <select asp-for="GameId" class ="form-control" asp-items="ViewBag.Games"></select>
+            </div>
+            
+            <input type = "hidden" value = "@DateTime.Now" name = "BuyDate">
+            <input type = "hidden" value = "@ViewBag.UserId" name = "UserId">
+            
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

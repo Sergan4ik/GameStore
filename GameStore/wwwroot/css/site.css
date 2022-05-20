@@ -8,11 +8,52 @@ html {
   }
 }
 
+.button{
+  width: 100px
+}
+
+#container {
+  width: 300px;
+  margin: auto;
+}
+
+#chart1 {
+  width: 100px;
+  float: left;
+  height: 300px;
+}
+
+#chart2 {
+  width: 600px;
+  float: right;
+  height: 300px;
+}
+
+#picker-inline {
+  width: 1000px;
+  margin: 0 auto;
+  display: inline;}
+
+.download-btn {
+  width: 200px;
+  margin: 0 auto;
+  display: inline;}
+
+#upload_file{
+  width: 600px;
+  float: left;
+  height: 150px;
+}
+#download_file{
+  width: 300px;
+  float: right;
+  height: 150px;
+}
+
 html {
   position: relative;
   min-height: 100%;
 }
-
 body {
   margin-bottom: 60px;
 }
