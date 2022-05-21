@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using GameStore;
 
 namespace GameStore
 {
@@ -9,11 +10,13 @@ namespace GameStore
     {
         public GamesDBContext()
         {
+            Database.EnsureCreated();
         }
 
         public GamesDBContext(DbContextOptions<GamesDBContext> options)
             : base(options)
         {
+            Database.EnsureCreated();
         }
 
         public virtual DbSet<Game?> Games { get; set; } = null!;

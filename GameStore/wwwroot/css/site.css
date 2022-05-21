@@ -44,9 +44,10 @@ html {
   float: left;
   height: 150px;
 }
+
 #download_file{
-  width: 300px;
-  float: right;
+  width: 800px;
+  float: center;
   height: 150px;
 }
 

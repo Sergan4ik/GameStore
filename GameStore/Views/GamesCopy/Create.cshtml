@@ -1,10 +1,10 @@
 @model GameStore.GameCopy
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Покупка гри";
 }
 
-<h1>Create</h1>
+<h1>Виберіть гру</h1>
 
 <h4>Покупка гри для @ViewBag.Username</h4>
 <hr />
@@ -28,7 +28,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class = "btn btn-outline-danger">Назад до бібліотеки</a>
 </div>
 
 @section Scripts {

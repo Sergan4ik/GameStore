@@ -4,27 +4,42 @@
     ViewData["Title"] = "Куплені ігри користувачем";
 }
 
+<style>
+.center-text {
+    height: 56px;
+    line-height: 56px;
+    text-align: center;
+  }
+</style>
+
 <h1>Ігри куплені користувачем @ViewBag.Username</h1>
 
-<p>
-    @Html.ActionLink("Купити нову гру" , "Create" , new {UserId = @ViewBag.Id})
-</p>
+<div>
+    <a asp-action="Create" asp-route-UserId="@ViewBag.Id" class="btn btn-outline-dark">Купити гру</a>
+    @*Html.ActionLink("Купити нову гру", "Create", new { UserId = @ViewBag.Id })*@
+</div>
 
-<div id = "download_file">
+<div class = "text-center">
         <h3>Завантажити інформацію про профіль</h3>
-        <a asp-action="Export" asp-controller="GamesCopy" asp-route-userId="@ViewBag.Id"> Завантажити </a>
+        <a asp-action="Export" asp-controller="GamesCopy" asp-route-userId="@ViewBag.Id" class="btn btn-outline-info"> Завантажити </a>
 </div>
 
 <table class="table">
     <thead>
         <tr>
-            <th>
+            <th class="center-text">
                 @Html.DisplayNameFor(model => model.Game)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.User)
+            <th class="center-text">
+                @Html.DisplayNameFor(model => model.Game.GameStudio.StudioName)
             </th>
-            <th>
+            <th class="center-text">
+                @Html.DisplayNameFor(model => model.Game.Genre)
+            </th>
+            <th class="center-text">
+                @Html.DisplayNameFor(model => model.Game.AgePermission)
+            </th>
+            <th class="center-text">
                 @Html.DisplayNameFor(model => model.BuyDate)
             </th>
             <th></th>
@@ -33,19 +48,28 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
+            <td class="center-text">
                 @Html.DisplayFor(modelItem => item.Game.Name)
             </td>
-            <td>
+            <th class="center-text">
+                @Html.DisplayFor(modelItem => item.Game.GameStudio.StudioName)
+            </th>
+            <th class="center-text">
+                @Html.DisplayFor(modelItem => item.Game.Genre)
+            </th>
+            <th class="center-text">
+                @Html.DisplayFor(modelItem => item.Game.AgePermission)
+            </th>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.User.Username)
-            </td>
-            <td>
+            </td>*@
+            <td class="center-text">
                 @Html.DisplayFor(modelItem => item.BuyDate)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.CopyId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.CopyId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.CopyId">Delete</a>
+            <td class="center-text">
+                <a asp-action="Edit" asp-route-id="@item.CopyId" class="btn btn-primary">Edit</a>
+                <a asp-action="Details" asp-route-id="@item.CopyId" class="btn btn-primary">Details</a>
+                <a asp-action="Delete" asp-route-id="@item.CopyId" class="btn btn-primary">Delete</a>
             </td>
         </tr>
 }

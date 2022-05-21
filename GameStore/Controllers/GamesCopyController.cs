@@ -29,7 +29,9 @@ namespace GameStore.Controllers
             var byedGames = _context.GameCopies
                 .Where(g => g.UserId == userId)
                 .Include(g => g.User)
-                .Include(g => g.Game);
+                .Include(g => g.Game)
+                .Include(g => g.Game)
+                .ThenInclude(g => g.GameStudio);
             return View(await byedGames.ToListAsync());
         }
 
