@@ -91,9 +91,9 @@ namespace GameStore.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Username,Email,BirthDate,Balance")] User user)
+        public async Task<IActionResult> Edit(int itemId, [Bind("Id,Username,Email,BirthDate,Balance")] User user)
         {
-            if (id != user.Id)
+            if (itemId != user.Id)
             {
                 return NotFound();
             }
@@ -143,13 +143,13 @@ namespace GameStore.Controllers
         // POST: Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int itemId)
         {
             if (_context.Users == null)
             {
                 return Problem("Entity set 'GamesDBContext.Users'  is null.");
             }
-            var user = await _context.Users.FindAsync(id);
+            var user = await _context.Users.FindAsync(itemId);
             if (user != null)
             {
                 _context.Users.Remove(user);

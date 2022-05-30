@@ -1,0 +1,168 @@
+@using Microsoft.EntityFrameworkCore.Query
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using DocumentFormat.OpenXml.Wordprocessing
+@model IEnumerable<GameStore.Game>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<style>
+.center-text {
+    height: 56px;
+    line-height: 56px;
+    text-align: center;
+  }
+.right-text {
+    height: 56px;
+    line-height: 56px;
+    text-align: right;
+  }
+</style>
+
+<h1>Каталог ігор</h1>
+
+<div class="right-text"><b>Баланс @ViewBag.Balance.ToString("c")</b></div>
+
+<div class="container">
+    <div id="chart1"></div>
+    <div id="chart2"></div>
+</div>
+
+@if (ViewBag.ErrorWithAge)
+{
+    <div class="text-danger"><b>Неможливо купити гру через вікові обмеження</b></div>
+}
+
+<table class="table">
+    <thead>
+    <tr>
+        <th class="center-text">
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th class="center-text">
+            @Html.DisplayNameFor(model => model.Genre)
+        </th>
+        <th class="center-text">
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th class="center-text">
+            @Html.DisplayNameFor(model => model.GameStudio.StudioName)
+        </th>
+        <th class="center-text">
+            @Html.DisplayNameFor(model => model.AgePermission)
+        </th>
+        <th class="center-text">
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+        <tr>
+            <td class="center-text">
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td class="center-text">
+                @Html.DisplayFor(modelItem => item.Genre)
+            </td>
+            <td class="center-text">
+                @Html.DisplayFor(modelItem => item.Description)
+            </td >
+            <td class="center-text">
+                @Html.DisplayFor(modelItem => item.GameStudio.StudioName)
+            </td>
+            <td class="center-text">
+                @Html.DisplayFor(modelItem => item.AgePermission)
+            </td>
+            <td class="center-text">
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td class="center-text">
+                @if (!IsByed(item.GameId))
+                {
+                    <a asp-action="Details" asp-route-itemId="@item.GameId" asp-route-email="@User.Identity.Name" class="btn btn-outline-warning">Купити</a>
+                }
+                else{
+                    <a asp-action="Details" asp-route-itemId="@item.GameId" asp-route-email="@User.Identity.Name" class="btn btn-success disabled">Купити</a>
+                }
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+@section scripts{
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+    google.charts.load('current', { 'packages': ['corechart'] });
+    google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+
+            $.get('/api/Chart/Games', function(JsonData) {
+                data = google.visualization.arrayToDataTable(JsonData, false);
+                var option = {
+                    title: "Співвідношення кількості проданих копій ігор",
+                    width: 500,
+                    height: 400,
+                    backgroundColor: 'transparent',
+                };
+                chart = new google.visualization.PieChart(document.getElementById('chart1'));
+                chart.draw(data, option);
+            })
+        }
+    </script>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+          google.charts.load('current', {'packages':['treemap']});
+          google.charts.setOnLoadCallback(drawChart);
+          function drawChart() {
+              $.get('/api/Chart/GameStudiosCapitalization', function(JsonData){
+                  data = google.visualization.arrayToDataTable(JsonData, false);
+                  tree = new google.visualization.TreeMap(document.getElementById('chart2'));
+                      
+                  tree.draw(data, {
+                    title: "Співвідношення капіталізацій ігрових студій",
+                    enableHighlight: true,
+                    minColor: '#009688',
+                    midColor: '#00FF88',
+                    maxColor: '#AA96FF',
+                    backgroundColor: { fill:'transparent' },
+                    minHighlightColor: '#8c6bb1',
+                    midHighlightColor: '#8c6bb1',
+                    maxHighlightColor: '#8c6bb1',
+                    maxDepth: 1,
+                    maxPostDepth: 2,
+                    headerHeight: 50,
+                    fontColor: 'black',
+                    showScale: true,
+                    useWeightedAverageForAggregation: true,
+                    eventsConfig: {
+                      highlight: ['mousein'],
+                      unhighlight: ['mouseout'],
+                    },
+                    generateTooltip: showStaticTooltip
+                  });
+                  
+                  function showStaticTooltip(row, size, value) {
+                        return '<div style="background:#002288; padding:10px;">' +
+                             'Капіталізація - ' + data.getValue(row,2) +'$ </div>';
+                  }
+
+              })
+          }
+        </script>
+}
+
+
+@functions
+{
+    bool IsByed(int gameId)
+    {
+        IIncludableQueryable<GameCopy, Game?> b = ViewBag.ByedGames;
+        return b.Any(g => g.GameId == gameId);
+    }
+}

@@ -1,0 +1,75 @@
+@model IEnumerable<GameStore.User>
+
+<style type="text/css">
+  table          {border:ridge 5px red;}
+  table td#myCell {background-color:#dab912;}
+</style>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Топ користувачів за активністю (витраченими грошима)</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Username)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                Куплено ігр
+            </th>
+            <th>
+                Витрачена сума
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        @if (item.Email == ViewBag.myUsername)
+        {
+            <tr style="background-color:#cbc71f">
+                <td id = "myCell">
+                    @Html.DisplayFor(modelItem => item.Username)
+                </td>
+                <td id = "myCell">
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td id = "myCell">
+                    @Html.DisplayFor(modelItem => item.GameCopies.Count)
+                </td>
+                <td id = "myCell">
+                    @((item.GameCopies.Sum(gc => gc.Game.Price).Value + item.ItemsInInventories.Sum(i => i.SourceItem.Price)).Value.ToString("c"))
+                </td>
+                <td id = "myCell">
+                    <a asp-action="Details" class="btn btn-primary" asp-route-id="@item.Id">Details</a>
+                </td>
+            </tr>
+        }
+        else
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Username)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GameCopies.Count)
+                </td>
+                <td>
+                    @((item.GameCopies.Sum(gc => gc.Game.Price).Value + item.ItemsInInventories.Sum(i => i.SourceItem.Price)).Value.ToString("c"))
+                </td>
+                <td>
+                    <a asp-action="Details" class="btn btn-primary" asp-route-id="@item.Id">Details</a> 
+                </td></tr>
+        }
+}
+    </tbody>
+</table>

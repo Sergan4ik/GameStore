@@ -1,0 +1,39 @@
+@model GameStore.ItemsInInventory
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Продаж</h1>
+
+<h3>Ви впевнені , що хочете продати?</h3>
+<div>
+    <h4>Предмет</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Owner.Username)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Owner.Username)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SourceItem.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SourceItem.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SourceItem.Price)
+        </dt>
+        <dd class = "col-sm-10">
+            @Model.SourceItem.Price.Value.ToString("c")
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="ItemCopyId" />
+        <input type="submit" value="Продати" class="btn btn-outline-danger" />
+        <a class="btn btn-outline-info" asp-action="Index" asp-route-email="@User.Identity.Name">Назад</a>
+    </form>
+</div>

@@ -1,0 +1,51 @@
+@model IEnumerable<GameStore.ItemsInInventory>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<style>
+.center-text {
+    height: 56px;
+    line-height: 56px;
+    text-align: center;
+  }
+</style>
+
+<h1>Інвентар</h1>
+
+<table class="table">
+    <thead>
+        <tr class="center-text">
+            <th>
+                @Html.DisplayNameFor(model => model.SourceItem.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SourceItem.GameNavigation.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SourceItem.Price)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr class="center-text">
+            <td>
+                @Html.DisplayFor(modelItem => item.SourceItem.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SourceItem.GameNavigation.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SourceItem.Price)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-itemId="@item.ItemCopyId" class="btn btn-primary">Інформація</a>
+                <a asp-action="Delete" asp-route-itemId="@item.ItemCopyId" class="btn btn-outline-danger">Продати</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

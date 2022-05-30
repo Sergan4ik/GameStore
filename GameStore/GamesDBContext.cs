@@ -10,13 +10,11 @@ namespace GameStore
     {
         public GamesDBContext()
         {
-            Database.EnsureCreated();
         }
 
         public GamesDBContext(DbContextOptions<GamesDBContext> options)
             : base(options)
         {
-            Database.EnsureCreated();
         }
 
         public virtual DbSet<Game?> Games { get; set; } = null!;
@@ -183,6 +181,13 @@ namespace GameStore
             OnModelCreatingPartial(modelBuilder);
         }
 
+        public User GetUserByEmail(string email)
+        {
+            User user = Users.FirstOrDefault(u => u.Email == email);
+            return user;
+        }
+
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
     }
 }

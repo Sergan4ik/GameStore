@@ -1,0 +1,31 @@
+@model GameStore.Item
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Купити предмет?</h1>
+
+<h4>@Model.Name за @Model.Price.Value.ToString("c")</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="BuyItem">
+            @if (ViewBag.Balance >= ViewBag.ItemCost)
+            {
+                <input type="hidden" value="@User.Identity.Name" name="userName"/>
+                <input type="hidden" value="@Model.Id" name="itemId"/>
+                <input type="submit" value="Купити" class="btn btn-outline-success"/>
+            }
+            else
+            {
+                <a asp-action="BuyItem" asp-route-gameId="@Model.Id" asp-route-email="@User.Identity.Name" class="btn btn-success disabled">Купити</a>
+            }
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-outline-danger" asp-route-email="@User.Identity.Name">Назад до каталогу</a>
+</div>
+

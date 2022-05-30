@@ -579,3 +579,8 @@ F:\Game Store Lab\GameStore\GameStore\bin\Debug\net6.0\ClosedXML.dll
 F:\Game Store Lab\GameStore\GameStore\bin\Debug\net6.0\DocumentFormat.OpenXml.dll
 F:\Game Store Lab\GameStore\GameStore\bin\Debug\net6.0\ExcelNumberFormat.dll
 F:\Game Store Lab\GameStore\GameStore\bin\Debug\net6.0\System.IO.Packaging.dll
+F:\Game Store Lab\GameStore\GameStore\bin\Debug\net6.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+F:\Game Store Lab\GameStore\GameStore\bin\Debug\net6.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+F:\Game Store Lab\GameStore\GameStore\bin\Debug\net6.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+F:\Game Store Lab\GameStore\GameStore\bin\Debug\net6.0\Microsoft.Extensions.Identity.Core.dll
+F:\Game Store Lab\GameStore\GameStore\bin\Debug\net6.0\Microsoft.Extensions.Identity.Stores.dll

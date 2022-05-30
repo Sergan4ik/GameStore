@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "uFU603pA4WqzagKJgXkGlJP/Qe6H9NQLkQGF8spLmkSkRjDt6VL/3gjoPychG3L5s0moSruO/BOUj4KwZb5BrA==",
+  "dgSpecHash": "Ai8AwKLVsm2uEAbdHtEzLPcnQJZelbneohZSP8Xu81YNeD3aeUag7WJq/vd2kH7i8dbe0f/5Bk6y3OjbodIIZA==",
   "success": true,
   "projectFilePath": "F:\\Game Store Lab\\GameStore\\GameStore\\GameStore.csproj",
   "expectedPackageFiles": [
@@ -11,6 +11,9 @@
     "C:\\Users\\serik\\.nuget\\packages\\messagepack\\2.1.152\\messagepack.2.1.152.nupkg.sha512",
     "C:\\Users\\serik\\.nuget\\packages\\messagepack.annotations\\2.1.152\\messagepack.annotations.2.1.152.nupkg.sha512",
     "C:\\Users\\serik\\.nuget\\packages\\messagepackanalyzer\\2.1.152\\messagepackanalyzer.2.1.152.nupkg.sha512",
+    "C:\\Users\\serik\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\6.0.5\\microsoft.aspnetcore.cryptography.internal.6.0.5.nupkg.sha512",
+    "C:\\Users\\serik\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\6.0.5\\microsoft.aspnetcore.cryptography.keyderivation.6.0.5.nupkg.sha512",
+    "C:\\Users\\serik\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\6.0.5\\microsoft.aspnetcore.identity.entityframeworkcore.6.0.5.nupkg.sha512",
     "C:\\Users\\serik\\.nuget\\packages\\microsoft.aspnetcore.mvc.razor.extensions\\6.0.5\\microsoft.aspnetcore.mvc.razor.extensions.6.0.5.nupkg.sha512",
     "C:\\Users\\serik\\.nuget\\packages\\microsoft.aspnetcore.mvc.razor.runtimecompilation\\6.0.5\\microsoft.aspnetcore.mvc.razor.runtimecompilation.6.0.5.nupkg.sha512",
     "C:\\Users\\serik\\.nuget\\packages\\microsoft.aspnetcore.razor.language\\6.0.5\\microsoft.aspnetcore.razor.language.6.0.5.nupkg.sha512",
@@ -62,6 +65,8 @@
     "C:\\Users\\serik\\.nuget\\packages\\microsoft.extensions.fileproviders.abstractions\\7.0.0-preview.4.22229.4\\microsoft.extensions.fileproviders.abstractions.7.0.0-preview.4.22229.4.nupkg.sha512",
     "C:\\Users\\serik\\.nuget\\packages\\microsoft.extensions.fileproviders.physical\\7.0.0-preview.4.22229.4\\microsoft.extensions.fileproviders.physical.7.0.0-preview.4.22229.4.nupkg.sha512",
     "C:\\Users\\serik\\.nuget\\packages\\microsoft.extensions.filesystemglobbing\\7.0.0-preview.4.22229.4\\microsoft.extensions.filesystemglobbing.7.0.0-preview.4.22229.4.nupkg.sha512",
+    "C:\\Users\\serik\\.nuget\\packages\\microsoft.extensions.identity.core\\6.0.5\\microsoft.extensions.identity.core.6.0.5.nupkg.sha512",
+    "C:\\Users\\serik\\.nuget\\packages\\microsoft.extensions.identity.stores\\6.0.5\\microsoft.extensions.identity.stores.6.0.5.nupkg.sha512",
     "C:\\Users\\serik\\.nuget\\packages\\microsoft.extensions.logging\\7.0.0-preview.4.22229.4\\microsoft.extensions.logging.7.0.0-preview.4.22229.4.nupkg.sha512",
     "C:\\Users\\serik\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\7.0.0-preview.4.22229.4\\microsoft.extensions.logging.abstractions.7.0.0-preview.4.22229.4.nupkg.sha512",
     "C:\\Users\\serik\\.nuget\\packages\\microsoft.extensions.options\\7.0.0-preview.4.22229.4\\microsoft.extensions.options.7.0.0-preview.4.22229.4.nupkg.sha512",

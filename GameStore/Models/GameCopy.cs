@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace GameStore
 {
@@ -8,6 +9,8 @@ namespace GameStore
         public int CopyId { get; set; }
         public int? UserId { get; set; }
         public int? GameId { get; set; }
+        [DataType(DataType.Date)]
+        [Display(Name = "Дата покупки")]
         public DateTime? BuyDate { get; set; }
 
         public virtual Game? Game { get; set; }

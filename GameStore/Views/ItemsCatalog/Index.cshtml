@@ -1,0 +1,89 @@
+@using Microsoft.EntityFrameworkCore.Query
+@model IEnumerable<GameStore.Item>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<style>
+.center-text {
+    width: 400px;
+    line-height: 56px;
+    text-align: center;
+  }
+.right-text {
+    height: 56px;
+    line-height: 56px;
+    text-align: right;
+  }
+.left-text {
+    text-align: left;
+  }
+</style>
+
+<h1 class="center-text">Каталог предметів</h1>
+
+<div class="form-group">
+    <form asp-action="Index" class="center-text">
+        <label for="exampleSelect1" class="form-label mt-4">Виберіть гру</label>
+        <select class="form-select" id="exampleSelect1" name="gameName" asp-items="ViewBag.Games"></select>
+        <input type="hidden" name = "email" value="@User.Identity.Name"/>
+        <input type="submit" value="Фільтрувати" class="btn btn-outline-info"/>
+    </form>
+</div>
+
+<div class="right-text"><b>Баланс @ViewBag.Balance.ToString("c")</b></div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th class="center-text">
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th class="center-text">
+                @Html.DisplayNameFor(model => model.GameNavigation.Name)
+            </th>
+            <th class="center-text">
+                @Html.DisplayNameFor(model => model.Rarity)
+            </th >
+            <th class="center-text">
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td class="center-text">
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td class="center-text">
+                @Html.DisplayFor(modelItem => item.GameNavigation.Name)
+            </td>
+            <td class="center-text">
+                @Html.DisplayFor(modelItem => item.Rarity)
+            </td>
+            <td class="center-text">
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td class="center-text">
+                @if (!IsByed(item.Id))
+                {
+                    <a asp-action="Edit" asp-route-itemId="@item.Id" asp-route-email="@User.Identity.Name" class="btn btn-outline-warning">Купити</a>
+                }
+                else
+                {
+                    <a asp-action="Edit" asp-route-itemId="@item.Id" asp-route-email="@User.Identity.Name" class="btn btn-success disabled">Купити</a>
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+@functions {
+    private bool IsByed(int itemId)
+    {
+        IIncludableQueryable<ItemsInInventory, Item?> items = ViewBag.ByedItems;
+        return items.Any(i => i.SourceItemId == itemId);
+    }
+}

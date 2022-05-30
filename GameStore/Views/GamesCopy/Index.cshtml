@@ -1,3 +1,5 @@
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model IEnumerable<GameStore.GameCopy>
 
 @{
@@ -14,10 +16,24 @@
 
 <h1>Ігри куплені користувачем @ViewBag.Username</h1>
 
-<div>
-    <a asp-action="Create" asp-route-UserId="@ViewBag.Id" class="btn btn-outline-dark">Купити гру</a>
-    @*Html.ActionLink("Купити нову гру", "Create", new { UserId = @ViewBag.Id })*@
+<span>
+    @*<div>
+        <a asp-action="Create" asp-route-UserId="@ViewBag.Id" class="btn btn-outline-dark">Купити гру</a>
+        Html.ActionLink("Купити нову гру", "Create", new { UserId = @ViewBag.Id })
+    </div>*@
+    <form method="post" asp-controller="Account" asp-action="Logout">
+            <input type="submit" value="Вихід" class = "btn btn-outline-dark"/>
+    </form>
+</span>
+
+<div class="text-center">
+    @{
+        var nfi = (NumberFormatInfo)CultureInfo.CurrentCulture.NumberFormat.Clone();
+        nfi.CurrencyGroupSeparator = " ";
+    }
+    <h3>Баланс @ViewBag.Balance.ToString("c" , CultureInfo.CurrentCulture)</h3>
 </div>
+
 
 <div class = "text-center">
         <h3>Завантажити інформацію про профіль</h3>
@@ -28,7 +44,7 @@
     <thead>
         <tr>
             <th class="center-text">
-                @Html.DisplayNameFor(model => model.Game)
+                @Html.DisplayNameFor(model => model.Game.Name)
             </th>
             <th class="center-text">
                 @Html.DisplayNameFor(model => model.Game.GameStudio.StudioName)
@@ -37,10 +53,7 @@
                 @Html.DisplayNameFor(model => model.Game.Genre)
             </th>
             <th class="center-text">
-                @Html.DisplayNameFor(model => model.Game.AgePermission)
-            </th>
-            <th class="center-text">
-                @Html.DisplayNameFor(model => model.BuyDate)
+                @Html.DisplayNameFor(model => model.Game.Price)
             </th>
             <th></th>
         </tr>
@@ -58,18 +71,11 @@
                 @Html.DisplayFor(modelItem => item.Game.Genre)
             </th>
             <th class="center-text">
-                @Html.DisplayFor(modelItem => item.Game.AgePermission)
+                @Html.DisplayFor(modelItem => item.Game.Price)
             </th>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.User.Username)
-            </td>*@
             <td class="center-text">
-                @Html.DisplayFor(modelItem => item.BuyDate)
-            </td>
-            <td class="center-text">
-                <a asp-action="Edit" asp-route-id="@item.CopyId" class="btn btn-primary">Edit</a>
-                <a asp-action="Details" asp-route-id="@item.CopyId" class="btn btn-primary">Details</a>
-                <a asp-action="Delete" asp-route-id="@item.CopyId" class="btn btn-primary">Delete</a>
+                <a asp-action="Details" asp-route-itemId="@item.CopyId" class="btn btn-primary">Деталі</a>
+                <a asp-action="Delete" asp-route-itemId="@item.CopyId" class="btn btn-outline-danger">Віддати</a>
             </td>
         </tr>
 }

@@ -18,6 +18,7 @@ namespace GameStore
         [Display(Name ="Емейл")]
         public string? Email { get; set; }
         [Display(Name = "Дата народження")]
+        [DataType(DataType.Date)]
         public DateTime? BirthDate { get; set; }
         [Display(Name = "Баланс")]
         public decimal? Balance { get; set; }

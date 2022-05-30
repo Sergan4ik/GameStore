@@ -1,0 +1,40 @@
+@model GameStore.ViewModels.RegisterViewModel
+<style>
+.center {
+text-align: center;
+align-items: center;
+width: 700px;
+}
+</style>
+<h2>Реєстрація нового користувача</h2>
+<form method="post" asp-controller="Account" asp-action="Register" class = "center">
+    <div asp-validation-summary="ModelOnly"></div>
+    <div>
+        <label asp-for="Email"></label><br/>
+        <input asp-for="Email" class="form-control"/>
+        <span asp-validation-for="Email"></span>
+    </div>
+    <div>
+        <label asp-for="UserName"></label><br />
+        <input asp-for="UserName" class="form-control"/>
+        <span asp-validation-for="UserName"></span>
+    </div>
+    <div>
+        <label asp-for="BirthDate"></label><br />
+        <input asp-for="BirthDate" class="form-control"/>
+        <span asp-validation-for="BirthDate"></span>
+    </div>
+    <div>
+        <label asp-for="Password"></label><br />
+        <input asp-for="Password" class="form-control"/>
+        <span asp-validation-for="Password"></span>
+    </div>
+    <div>
+        <label asp-for="PasswordConfirm"></label><br />
+        <input asp-for="PasswordConfirm" class="form-control"/>
+        <span asp-validation-for="PasswordConfirm"></span>
+    </div>
+    <div>
+        <input type="submit" value="Реєстрація" class="btn btn-primary"/>
+    </div>
+</form>

@@ -1,8 +1,33 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Лабораторна роботи ІСтаТП 2021. Бібліотека";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<style>
+    .center {
+    text-align: center;
+    align-items: center;
+    width: 700px;
+    }
+</style>
+
+@if(User.Identity.IsAuthenticated)
+{
+    <p>@User.Identity.Name</p>
+
+    <form method="post" asp-controller="GamesCopy" asp-action="Index" asp-route-name="@User.Identity.Name">
+        <input type="submit" value="До бібліотеки" class = "btn btn-outline-info"/>
+    </form>
+
+    <form method="post" asp-controller="Account" asp-action="Logout">
+        <input type="submit" value="Вихід" class = "btn btn-outline-dark"/>
+    </form>
+}
+else
+{
+    <p class = "center">
+        <a asp-controller="Account" asp-action="Login" class = "btn btn-outline-info">Вхід</a>
+        <br>
+        <br>
+        <a asp-controller="Account" asp-action="Register" class = "btn btn-outline-dark">Реєстація</a>
+    </p>
+}

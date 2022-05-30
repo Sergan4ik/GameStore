@@ -1,0 +1,27 @@
+@model GameStore.Game
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Підтвердження покупки</h1>
+
+<div>
+</div>
+<div>
+    <form asp-action="BuyGame">
+        @if (ViewBag.Balance >= ViewBag.GameCost)
+        {
+            <input type="hidden" value="@User.Identity.Name" name = "email"/>
+            <input type="hidden" value="@Model.GameId" name = "gameId"/>
+            <input type="submit" value="Купити" class="btn btn-outline-success" />
+        @*<a asp-action="BuyGame" asp-controller="GamesCatalog" asp-route-gameId="@Model.GameId" asp-route-email="@User.Identity.Name" class="btn btn-outline-success">Купити гру</a>*@
+        }
+        else
+        {
+            <a asp-action="BuyGame" asp-route-gameId="@Model.GameId" asp-route-email="@User.Identity.Name" class="btn btn-success disabled">Купити гру</a>
+        }
+    </form>
+    <br>
+    <a asp-action="Index" asp-route-email="@User.Identity.Name" class="btn btn-outline-danger">Назад</a>
+</div>

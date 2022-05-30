@@ -1,0 +1,43 @@
+@model IEnumerable<GameStore.GameCopy>
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Ігри користувача @ViewBag.user</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th class="center-text">
+                @Html.DisplayNameFor(model => model.Game.Name)
+            </th>
+            <th class="center-text">
+                @Html.DisplayNameFor(model => model.Game.GameStudio.StudioName)
+            </th>
+            <th class="center-text">
+                @Html.DisplayNameFor(model => model.Game.Price)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td class="center-text">
+                @Html.DisplayFor(modelItem => item.Game.Name)
+            </td>
+            <th class="center-text">
+                @Html.DisplayFor(modelItem => item.Game.GameStudio.StudioName)
+            </th>
+            <th class="center-text">
+                @Html.DisplayFor(modelItem => item.Game.Price)
+            </th>
+        </tr>
+}
+    </tbody>
+</table>
+
+<div>
+    <a class = "btn btn-outline-danger" asp-action="Index" asp-route-myUsername="@User.Identity.Name">Назад</a>
+</div>

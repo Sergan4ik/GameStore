@@ -1,5 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@using GameStore.ViewModels
+<!DOCTYPE html>
 <html lang="en">
+<style>
+    .right_header {
+        float: right;
+    }
+</style>
 <head>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap_morph.css"/>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
@@ -11,13 +17,21 @@
 <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container-fluid">
-            <a class="navbar-brand" asp-area="" asp-controller="Users" asp-action="Index">Ігровий магазин</a>
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Ігровий магазин</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
+                <ul class="btn-group" role="group">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <a class="btn btn-outline-dark" asp-controller="GamesCatalog" asp-action="Index" asp-route-email="@User.Identity.Name">Каталог ігор</a>
+                    <a class="btn btn-outline-info" asp-controller="ItemsCatalog" asp-action="Index" asp-route-email="@User.Identity.Name">Ігрові предмети</a>
+                    <a class="btn btn-outline-primary" asp-controller="Home" asp-action="Index">Бібліотека</a>
+                    <a class="btn btn-outline-warning" asp-controller="ItemsInventory" asp-route-email="@User.Identity.Name" asp-action="Index">Інвентар</a>
+                    <a class="btn btn-outline-light" asp-controller="Leaderboard" asp-route-myUsername="@User.Identity.Name" asp-action="Index">Користувачі</a>
+                }
                     @*<li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Home</a>
                     </li>
@@ -27,6 +41,12 @@
                 </ul>
             </div>
         </div>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <span>
+                <a asp-controller="Account" asp-action="AccountFunding" asp-route-email="@User.Identity.Name" id="line" class="btn btn-outline-success">Поповнити рахунок</a>
+            </span>
+        }
     </nav>
 </header>
 <div class="container">

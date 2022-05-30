@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc;
@@ -20,12 +21,14 @@ namespace GameStore.Controllers
         }
 
         // GET: GamesCopy
+        
         public async Task<IActionResult> Index(int? userId , string? username)
         {
-            if (userId == null) return RedirectToAction("Index", "Users");
+            if (userId == null) return RedirectToAction("Index", "Home");
 
             ViewBag.Id = userId;
             ViewBag.Username = username;
+            ViewBag.Balance = _context.GetUserByEmail(User.Identity.Name).Balance.Value;
             var byedGames = _context.GameCopies
                 .Where(g => g.UserId == userId)
                 .Include(g => g.User)
@@ -36,17 +39,19 @@ namespace GameStore.Controllers
         }
 
         // GET: GamesCopy/Details/5
-        public async Task<IActionResult> Details(int? id)
+
+        public async Task<IActionResult> Details(int? itemId)
         {
-            if (id == null || _context.GameCopies == null)
+            if (itemId == null || _context.GameCopies == null)
             {
                 return NotFound();
             }
 
             var gameCopy = await _context.GameCopies
                 .Include(g => g.Game)
+                .ThenInclude(g => g.GameStudio)
                 .Include(g => g.User)
-                .FirstOrDefaultAsync(m => m.CopyId == id);
+                .FirstOrDefaultAsync(m => m.CopyId == itemId);
             if (gameCopy == null)
             {
                 return NotFound();
@@ -56,6 +61,7 @@ namespace GameStore.Controllers
         }
 
         // GET: GamesCopy/Create
+
         public IActionResult Create(int UserId)
         {
             ViewBag.UserId = UserId;
@@ -83,14 +89,14 @@ namespace GameStore.Controllers
         }
 
         // GET: GamesCopy/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? itemId)
         {
-            if (id == null || _context.GameCopies == null)
+            if (itemId == null || _context.GameCopies == null)
             {
                 return NotFound();
             }
 
-            var gameCopy = await _context.GameCopies.Include(g => g.Game).Include(g => g.User).FirstAsync(g => g.CopyId == id);
+            var gameCopy = await _context.GameCopies.Include(g => g.Game).Include(g => g.User).FirstAsync(g => g.CopyId == itemId);
             if (gameCopy == null)
             {
                 return NotFound();
@@ -105,9 +111,9 @@ namespace GameStore.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CopyId,UserId,GameId,BuyDate")] GameCopy gameCopy)
+        public async Task<IActionResult> Edit(int itemId, [Bind("CopyId,UserId,GameId,BuyDate")] GameCopy gameCopy)
         {
-            if (id != gameCopy.CopyId)
+            if (itemId != gameCopy.CopyId)
             {
                 return NotFound();
             }
@@ -138,17 +144,18 @@ namespace GameStore.Controllers
         }
 
         // GET: GamesCopy/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? itemId)
         {
-            if (id == null || _context.GameCopies == null)
+            if (itemId == null || _context.GameCopies == null)
             {
                 return NotFound();
             }
 
             var gameCopy = await _context.GameCopies
                 .Include(g => g.Game)
+                .ThenInclude(g => g.GameStudio)
                 .Include(g => g.User)
-                .FirstOrDefaultAsync(m => m.CopyId == id);
+                .FirstOrDefaultAsync(m => m.CopyId == itemId);
             if (gameCopy == null)
             {
                 return NotFound();
@@ -160,15 +167,19 @@ namespace GameStore.Controllers
         // POST: GamesCopy/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int itemId)
         {
             if (_context.GameCopies == null)
             {
                 return Problem("Entity set 'GamesDBContext.GameCopies'  is null.");
             }
-            var gameCopy = await _context.GameCopies.FindAsync(id);
+
+            var userByEmail = _context.GetUserByEmail(User.Identity.Name);
+            var gameCopy = await _context.GameCopies.Include(g => g.Game)
+                .FirstAsync(g => g.CopyId == itemId);
             if (gameCopy != null)
             {
+                userByEmail.Balance += gameCopy.Game.Price;
                 _context.GameCopies.Remove(gameCopy);
             }
             
@@ -180,58 +191,79 @@ namespace GameStore.Controllers
         {
             using (XLWorkbook workbook = new XLWorkbook(XLEventTracking.Disabled))
             {
-                //var categories = _context.Categories.Include("Books").ToList();
-                //тут, для прикладу ми пишемо усі книжки з БД, в своїх проєктах ТАК НЕ РОБИТИ (писати лише вибрані)
-                //foreach (var c in categories)
-                //{
-                //    var worksheet = workbook.Worksheets.Add(c.Name);
-                //
-                //    worksheet.Cell("A1").Value = "Назва";
-                //    worksheet.Cell("B1").Value = "Автор 1";
-                //    worksheet.Cell("C1").Value = "Автор 2";
-                //    worksheet.Cell("D1").Value = "Автор 3";
-                //    worksheet.Cell("E1").Value = "Автор 4";
-                //    worksheet.Cell("F1").Value = "Категорія";
-                //    worksheet.Cell("G1").Value = "Інформація";
-                //    worksheet.Row(1).Style.Font.Bold = true;
-                //    var books = c.Books.ToList();
-                //
-                //    //нумерація рядків/стовпчиків починається з індекса 1 (не 0)
-                //    for (int i = 0; i < books.Count; i++)
-                //    {
-                //        worksheet.Cell(i + 2, 1).Value = books[i].Name;
-                //        worksheet.Cell(i + 2, 7).Value = books[i].Info;
-                //
-                //        var ab = _context.AuthorBooks.Where(a => a.BookId == books[i].Id).Include("Author").ToList();
-                //       
-                //
-                //        //більше 4-ох нікуди писати
-                //        int j = 0;
-                //        foreach (var a in ab)
-                //        {
-                //            if (j < 5)
-                //            {
-                //                worksheet.Cell(i + 2, j + 2).Value = a.Author.Name;
-                //                j++;
-                //            }
-                //        }
-                //
-                //    }
-            }
+                var byedGames = _context.GameCopies
+                    .Include(g => g.Game)
+                    .ThenInclude(g => g.GameStudio)
+                    .Where(g => g.UserId == userId);
+                var byedItems = _context.ItemsInInventories
+                    .Include(i => i.SourceItem)
+                    .ThenInclude(i => i.GameNavigation)
+                    .Where(i => i.OwnerId == userId);
+                var username = _context.Users.First(u => u.Id == userId).Username;
+                FillExcelTableWithGames(workbook, byedGames , username);
+                
+                var worksheet = workbook.Worksheets.Add("Предмети");
 
-            using (var stream = new MemoryStream())
-            {
-                //workbook.SaveAs(stream);
-                stream.Flush();
-
-                return new FileContentResult(stream.ToArray(),
-                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                worksheet.Cell("A1").Value = "Предмет";
+                worksheet.Cell("B1").Value = "Гра";
+                worksheet.Cell("C1").Value = "Рідкість";
+                worksheet.Cell("D1").Value = "Ціна";
+                worksheet.Row(1).Style.Font.Bold = true;
+                int curRow = 2;
+                foreach (var c in byedItems)
                 {
-                    //змініть назву файла відповідно до тематики Вашого проєкту
+                    var books = c;
+                    worksheet.Cell(curRow, 1).Value = c.SourceItem.Name;
+                    worksheet.Cell(curRow, 2).Value = c.SourceItem.GameNavigation.Name;
+                    worksheet.Cell(curRow, 3).Value = c.SourceItem.Rarity;
+                    worksheet.Cell(curRow, 4).Value = c.SourceItem.Price.Value.ToString("0.00") + "$";
+                    curRow++;
+                }
 
-                    FileDownloadName = $"library_{DateTime.UtcNow.ToShortDateString()}.xlsx"
-                };
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+
+                    return new FileContentResult(stream.ToArray(),
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                    {
+                        //змініть назву файла відповідно до тематики Вашого проєкту
+
+                        FileDownloadName = $"library_{DateTime.UtcNow.ToShortDateString()}.xlsx"
+                    };
+                }
             }
+        }
+
+        private static void FillExcelTableWithGames(XLWorkbook workbook, IQueryable<GameCopy> byedGames , string username)
+        {
+            var worksheet = workbook.Worksheets.Add("Ігри");
+            worksheet.Range("A1:E1").Merge().Value = $"Ігри куплені гравцем {username}";
+            worksheet.Cell("A2").Value = "Гра";
+            worksheet.Cell("B2").Value = "Розробник";
+            worksheet.Cell("C2").Value = "Дата покупки";
+            worksheet.Cell("D2").Value = "Жанр";
+            worksheet.Cell("E2").Value = "Ціна";
+            worksheet.Row(1).Style.Font.Bold = true;
+            worksheet.Row(2).Style.Font.Bold = true;
+            int curRow = 3;
+            decimal? summaryPrice = 0;
+            foreach (var c in byedGames)
+            {
+                var books = c;
+                worksheet.Cell(curRow, 1).Value = c.Game.Name;
+                worksheet.Cell(curRow, 2).Value = c.Game.GameStudio.StudioName;
+                worksheet.Cell(curRow, 3).Value = c.BuyDate.Value.ToString("MM/dd/yyyy");
+                worksheet.Cell(curRow, 4).Value = c.Game.Genre;
+                worksheet.Cell(curRow, 5).Value = c.Game.Price.Value.ToString("0.00") + "$";
+                summaryPrice += c.Game.Price;
+                curRow++;
+            }
+
+            worksheet.Cell(curRow, 1).Value = "Підсумок :";
+            worksheet.Cell(curRow, 3).Value = $"Куплено ігор - {byedGames.Count()}";
+            worksheet.Cell(curRow, 5).Value = $"На ціну - {summaryPrice.Value.ToString("0.00")}$";
+            
         }
 
 
